@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Chatify;
 
+use App\Helpers\WhatsappMetaHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -164,19 +165,8 @@ class MessagesController extends Controller
         try {
             $userPhoneNumber = '923328884986'; // Replace with recipient’s WhatsApp number
             $whatsappMessage = $request['message'];
-
-            $whatsappResponse = Http::withHeaders([
-                'Authorization' => 'Bearer EAAIcWBetlOsBO4owsaxHfqzGDf1EmpWVXpyOsgOoKVUqVKDJasVXrENi4a9DJGz6XItYy5ioHl00X8d3hMyVZBRYtBnggdWz6d6bqbOO7yR82JpCbhG9ShXhF8ClhkdMNxhUeRQlWcOw3lFpFGVZBWcYhOAkkxNBRC5ZA6gKE8pkE3weA2JJXQUNliqjdc4DcsGxQiXSqRc4Dz13UCAqDmhiAq6',
-                'Content-Type' => 'application/json',
-            ])->post('https://graph.facebook.com/v22.0/499907883213691/messages', [
-
-                'messaging_product' => 'whatsapp',
-                'to' => $userPhoneNumber,  // WhatsApp number (with country code)
-                'type' => 'text',
-                'text' => [
-                    'body' => $request['message']
-                ]
-            ]);
+            $wabaId = env('WABA_ID');
+            $whatsappResponse = WhatsappMetaHelper::sendWhatsappMessage($userPhoneNumber,$whatsappMessage,$wabaId);
 
             dd($whatsappResponse);
             if (!$whatsappResponse->successful()) {

@@ -76,3 +76,13 @@ Route::post('/webhook/whatsapp', function (Request $request) {
 
     return response()->json(['status' => 'no_message']);
 });
+
+Route::group(['prefix' => 'whatsapTemplate'], function() {
+
+    Route::get('/', [App\Http\Controllers\WhatsappTemplateController::class, 'index'])->name('whatsappTemplate');
+    Route::get('create', [App\Http\Controllers\WhatsappTemplateController::class, 'create'])->name('whatsappTemplate.create');
+    Route::post('/store', [App\Http\Controllers\WhatsappTemplateController::class, 'store'])->name('whatsappTemplate.store');
+    Route::get('{id}', [App\Http\Controllers\WhatsappTemplateController::class, 'show'])->name('whatsappTemplate.show');
+    Route::put('{id}', [App\Http\Controllers\WhatsappTemplateController::class, 'update'])->name('whatsappTemplate.update');
+    Route::get('destroy/{id}', [App\Http\Controllers\WhatsappTemplateController::class, 'destroy'])->name('whatsappTemplate.destroy');
+});
